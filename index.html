@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Propuesta Clínica Dental Cots — Plataforma de Reactivación de clientes</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* ---- Paleta corporativa SAS (extraída del logo) ---- */
+    --indigo:#2D2A5E;        /* color principal del logo */
+    --indigo-deep:#1C1A40;   /* indigo oscuro / fondos */
+    --indigo-700:#3A3674;
+    --indigo-300:#7B77B8;    /* acento claro */
+    --indigo-100:#E9E8F4;    /* fondos suaves */
+    --ink:#16142E;           /* texto principal */
+    --slate:#5A5870;         /* texto secundario */
+    --bg:#FFFFFF;
+    --bg-soft:#F6F6FB;
+    --line:#E4E3EF;
+    --ok:#1E9E6A;
+    --warn:#C28A1A;
+    --shadow:0 18px 50px -20px rgba(28,26,64,.35);
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Manrope',system-ui,sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px}
+
+  /* ---------------- LOGO SAS (recreado en SVG/CSS) ---------------- */
+  .sas-logo{display:inline-flex;flex-direction:column;align-items:center;gap:2px;line-height:1}
+  .sas-logo .mark{
+    font-family:'Comfortaa',sans-serif;font-weight:700;letter-spacing:-.02em;
+    color:var(--logo-color,var(--indigo));
+  }
+  .sas-logo svg{display:block}
+
+  /* ---- Co-branding (logo cliente + logo SAS) ---- */
+  .cobrand{display:flex;align-items:center;justify-content:center;gap:30px;flex-wrap:wrap}
+  .cobrand .sep{width:1px;height:88px;background:rgba(255,255,255,.22)}
+  .gc-logo{display:flex;flex-direction:column;align-items:center;gap:12px}
+  .gc-logo .tile{
+    background:#fff;border-radius:18px;padding:20px 26px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  .gc-logo .tile img{display:block;width:230px;height:auto}
+  .sas-tile{background:#fff;border-radius:18px;padding:20px 26px;display:flex;align-items:center;justify-content:center}
+  .sas-tile img{display:block;width:150px;height:auto}
+  .gc-logo .name{
+    font-size:13px;font-weight:700;letter-spacing:.18em;color:#fff;text-transform:uppercase;
+  }
+  .cobrand .by{font-size:12px;color:#8F8CC0;font-weight:600;letter-spacing:.05em;margin-bottom:8px}
+  .cobrand .unit{display:flex;flex-direction:column;align-items:center}
+  /* (reglas responsive al final del bloque <style>) */
+
+  /* ---------------- HERO ---------------- */
+  .hero{
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;
+    background:radial-gradient(120% 90% at 50% 0%, #26234f 0%, var(--indigo-deep) 55%, #0d0c22 100%);
+    color:#fff;padding:64px 24px;position:relative;
+  }
+  .hero .sas-logo .mark{font-size:64px;--logo-color:#fff}
+  .hero .smile path{stroke:#fff}
+  .hero .eyebrow{
+    margin-top:34px;font-size:13px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--indigo-300);font-weight:700;
+  }
+  .hero h1{
+    font-size:clamp(34px,6vw,60px);font-weight:800;letter-spacing:-.02em;margin-top:14px;line-height:1.05;
+  }
+  .hero .sub{margin-top:18px;font-size:clamp(16px,2.4vw,20px);color:#C9C7E4;max-width:560px}
+  .scroll-hint{position:absolute;bottom:34px;font-size:13px;color:#8F8CC0;letter-spacing:.05em;animation:bob 2s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+
+  /* ---------------- SECCIONES ---------------- */
+  section.block{padding:88px 0;border-bottom:1px solid var(--line)}
+  section.block.soft{background:var(--bg-soft)}
+  .num{
+    display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;
+    background:var(--indigo);color:#fff;font-weight:800;font-size:18px;margin-bottom:22px;
+    box-shadow:var(--shadow);
+  }
+  h2{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:22px}
+  h3{font-size:21px;font-weight:700;margin:8px 0 12px;color:var(--indigo)}
+  p{margin-bottom:16px;color:var(--slate);font-size:17px}
+  p strong,li strong{color:var(--ink)}
+  .lead{font-size:19px;color:var(--ink)}
+
+  /* .edit: marca interna de campo editable (sin resaltado visible) */
+  .edit{}
+
+  /* ---------------- PRECIO ---------------- */
+  .price-table{width:100%;border-collapse:collapse;margin:8px 0 36px;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+  .price-table td{padding:20px 24px;border-bottom:1px solid var(--line);font-size:18px}
+  .price-table tr:last-child td{border-bottom:none}
+  .price-table td:first-child{font-weight:600;color:var(--ink)}
+  .price-table td:last-child{text-align:right;font-weight:800;color:var(--indigo);font-size:20px;white-space:nowrap}
+  .price-table .was{color:var(--slate);text-decoration:line-through;font-weight:600;font-size:16px;margin-right:10px;opacity:.65}
+  .price-table .now{color:var(--indigo);font-weight:800;font-size:22px}
+  .badge-sas{display:inline-block;background:var(--indigo);color:#fff;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:999px;margin-bottom:14px}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:0 0 30px}
+  .stat{background:var(--indigo-deep);color:#fff;border-radius:var(--radius);padding:30px 26px;text-align:center}
+  .stat .big{font-size:clamp(34px,6vw,52px);font-weight:800;letter-spacing:-.02em;color:#fff;line-height:1}
+  .stat .cap{margin-top:10px;font-size:14px;color:var(--indigo-300);font-weight:600}
+  .callout{background:var(--indigo-100);border-left:4px solid var(--indigo);border-radius:0 12px 12px 0;padding:20px 24px;margin-top:10px}
+  .callout p:last-child{margin-bottom:0}
+
+  /* ---------------- LISTAS ---------------- */
+  ul.clean{list-style:none;margin:8px 0}
+  ul.clean li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid var(--line);font-size:16.5px;color:var(--ink)}
+  ul.clean li:last-child{border-bottom:none}
+  ul.clean li::before{content:"";position:absolute;left:4px;top:19px;width:9px;height:9px;border-radius:50%;background:var(--indigo)}
+  ul.arrow li::before{content:"→";background:none;color:var(--indigo);font-weight:800;top:11px;left:0;width:auto;height:auto}
+
+  /* ---------------- SOLUCIÓN ---------------- */
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px;margin-bottom:24px;box-shadow:var(--shadow)}
+  .card .tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--indigo-300);margin-bottom:6px}
+
+  /* ---------------- PLAZOS ---------------- */
+  .timeline{display:grid;gap:14px}
+  .timeline .row{display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 22px}
+  .timeline .row .k{font-weight:700;color:var(--indigo);min-width:210px}
+  .timeline .row .v{color:var(--ink);font-weight:600}
+
+  /* ---------------- INCLUIDO / NO ---------------- */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .cols .pane{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px}
+  .pane h3{display:flex;align-items:center;gap:8px}
+  .pane.yes h3{color:var(--ok)}
+  .pane.no h3{color:var(--slate)}
+  .pane ul{list-style:none}
+  .pane li{padding:10px 0;border-bottom:1px solid var(--line);font-size:15.5px;color:var(--ink)}
+  .pane li:last-child{border-bottom:none}
+  .pane li small{display:block;color:var(--slate);font-size:13px;margin-top:3px}
+
+  /* ---------------- FAQ ---------------- */
+  details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:0;margin-bottom:12px;overflow:hidden}
+  details summary{cursor:pointer;padding:20px 24px;font-weight:700;color:var(--ink);font-size:17px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  details summary::-webkit-details-marker{display:none}
+  details summary::after{content:"+";color:var(--indigo);font-size:24px;font-weight:700;transition:transform .2s}
+  details[open] summary::after{transform:rotate(45deg)}
+  details .answer{padding:0 24px 22px;color:var(--slate);font-size:16px}
+
+  /* ---------------- FIRMA ---------------- */
+  .sign{background:var(--indigo-deep);color:#fff;border-radius:var(--radius);padding:40px;margin-top:30px}
+  .sign .name{font-size:24px;font-weight:800;margin-bottom:6px}
+  .sign p{color:#C9C7E4}
+  .sign .pledge{margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15);font-size:14px;color:#A9A6CE}
+
+  footer{text-align:center;padding:40px 24px;color:var(--slate);font-size:13px}
+
+  /* ---------------- NAV DOTS ---------------- */
+  .dots{position:fixed;right:18px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:11px;z-index:50}
+  .dots a{width:10px;height:10px;border-radius:50%;background:#CFCEE0;transition:.2s}
+  .dots a:hover{background:var(--indigo);transform:scale(1.3)}
+
+  /* ---------------- RESPONSIVE / MÓVIL ---------------- */
+  @media(max-width:680px){
+    .stats,.cols{grid-template-columns:1fr}
+    .timeline .row{flex-direction:column;gap:4px}
+    .timeline .row .k{min-width:0}
+    .dots{display:none}
+    section.block{padding:60px 0}
+    .wrap{padding:0 20px}
+    .hero{padding:54px 20px}
+    .card{padding:24px 20px}
+    .cols .pane{padding:22px 20px}
+    .price-table td{padding:15px 16px;font-size:16px}
+    .price-table td:last-child{font-size:18px}
+    .price-table .now{font-size:19px}
+    .price-table .was{font-size:14px;margin-right:7px}
+    .sign{padding:28px 22px}
+    .callout{padding:18px 20px}
+    details summary{padding:18px 20px;font-size:16px}
+    details .answer{padding:0 20px 20px}
+    p{font-size:16px}
+    .lead{font-size:17.5px}
+    ul.clean li{font-size:16px;padding-left:30px}
+    .pane li{font-size:15px}
+  }
+  /* Co-branding: en móvil, logos apilados y más compactos */
+  @media(max-width:560px){
+    .cobrand{flex-direction:column;gap:16px}
+    .cobrand .sep{width:62px;height:1px}
+    .cobrand .by{margin-bottom:6px}
+    .gc-logo .tile{padding:14px 18px}
+    .gc-logo .tile img{width:180px;height:auto}
+    .gc-logo .name{font-size:12px;letter-spacing:.14em}
+    .sas-tile{padding:14px 20px}
+    .sas-tile img{width:116px}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV DOTS -->
+<nav class="dots" aria-hidden="true">
+  <a href="#s1" title="Por qué leer"></a>
+  <a href="#s2" title="Precio y ROI"></a>
+  <a href="#s3" title="Qué resolvemos"></a>
+  <a href="#s4" title="La solución"></a>
+  <a href="#s5" title="Plazos"></a>
+  <a href="#s6" title="Incluido"></a>
+  <a href="#s7" title="FAQ"></a>
+  <a href="#s8" title="Pago"></a>
+  <a href="#s9" title="Próximos pasos"></a>
+</nav>
+
+<!-- ============== HERO ============== -->
+<header class="hero">
+  <!-- LOCKUP CO-BRANDING: logo cliente (Clínica Dental Cots) + logo SAS -->
+  <div class="cobrand">
+    <!-- LOGO CLIENTE -->
+    <div class="unit">
+      <span class="by">Para</span>
+      <div class="gc-logo">
+        <div class="tile">
+          <img src="logo-cots.png" alt="Clínica Dental Cots">
+        </div>
+        <span class="name">Clínica Dental Cots</span>
+      </div>
+    </div>
+
+    <span class="sep"></span>
+
+    <!-- LOGO SAS -->
+    <div class="unit">
+      <span class="by">Por</span>
+      <div class="sas-tile"><img src="logo-sas.png" alt="Smart Aligner Services"></div>
+    </div>
+  </div>
+
+  <div class="eyebrow">Propuesta Comercial</div>
+  <h1>Plataforma de Reactivación de clientes</h1>
+  <p class="sub">Secuencias de mensajes con ofertas para clientes</p>
+  <div class="scroll-hint">↓ Desplázate para ver los detalles</div>
+</header>
+
+<!-- ============== 1. POR QUÉ LEER ============== -->
+<section class="block" id="s1">
+  <div class="wrap">
+    <span class="num">1</span>
+    <h2>Por qué debes leer este presupuesto</h2>
+    <p class="lead edit"><strong>Vimos y escuchamos el problema en tu clínica:</strong> tu base de datos guarda dos grandes oportunidades que hoy quedan sin trabajar. Por un lado, contactos que en su día pidieron información o dejaron sus datos y nunca llegaron a agendar; por otro, pacientes que ya confiaron en ti y a los que podrías ofrecer una revisión, un nuevo tratamiento o una promoción. Hoy, recuperarlos depende de que <strong>alguien de tu equipo escriba los WhatsApp uno a uno</strong>: hasta <strong>5 horas cada semana</strong> que no se dedican a lo importante.</p>
+    <p class="edit">Esta propuesta no es solo un presupuesto técnico. Es una <strong>hoja de ruta para convertir tu base de datos en primeras visitas y tratamientos</strong>: una plataforma que recupera de forma automática los contactos "dormidos" y reactiva a tus pacientes actuales con nuevas propuestas, sin que tu equipo tenga que dedicarle tiempo.</p>
+    <p>Aunque al final decidas no colaborar con nosotros, esta propuesta tiene valor: es exactamente qué va a pasar, cómo, cuándo, y cuánto vas a ganar.</p>
+  </div>
+</section>
+
+<!-- ============== 2. PRECIO Y ROI ============== -->
+<section class="block soft" id="s2">
+  <div class="wrap">
+    <span class="num">2</span>
+    <h2>Precio y retorno</h2>
+    <p>Sabemos que lo primero que todos miramos en una propuesta es el precio. Aquí está claro y sin sorpresas:</p>
+    <span class="badge-sas">Precio especial · Cliente método SAS</span>
+    <table class="price-table">
+      <tr><td>Implementación (única vez)</td><td><span class="was">3.500€</span><span class="now">2.000€</span></td></tr>
+      <tr><td>Mantenimiento mensual</td><td><span class="was">250€</span><span class="now">200€/mes</span></td></tr>
+    </table>
+    <div class="stats">
+      <div class="stat"><div class="big">5 h</div><div class="cap">Tiempo que recupera tu equipo<br>cada semana</div></div>
+      <div class="stat"><div class="big">~240 h</div><div class="cap">Recuperadas al año<br>(+30 jornadas laborales)</div></div>
+    </div>
+    <div class="callout">
+      <p><strong>En números simples:</strong></p>
+      <p>Como cliente del método SAS accedes a un precio especial: la implementación baja de <strong>3.500€ a 2.000€</strong> y el mantenimiento de <strong>250€ a 200€/mes</strong>.</p>
+      <p>A cambio, tu equipo deja de mandar los WhatsApp uno a uno: <strong>5 horas cada semana</strong> y cerca de <strong>240 horas al año</strong> —más de 30 jornadas laborales completas— que tu equipo puede dedicar a las tareas más importantes de la clínica, mientras la plataforma reactiva contactos y pacientes de forma automática.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 3. QUÉ RESOLVEMOS ============== -->
+<section class="block" id="s3">
+  <div class="wrap">
+    <span class="num">3</span>
+    <h2>¿Qué vamos a resolver?</h2>
+    <p>Lo que nos contaste en la reunión fue clarísimo. Estos son los problemas exactos que vamos a resolver:</p>
+    <ul class="clean arrow">
+      <li><strong>5 horas a la semana enviando WhatsApp a mano:</strong> un miembro de tu equipo escribe los mensajes uno a uno en lugar de dedicarse a lo importante.</li>
+      <li><strong>Contactos "dormidos" sin aprovechar:</strong> personas que pidieron información o dejaron sus datos y nunca llegaron a agendar una visita.</li>
+      <li><strong>Pacientes actuales sin reactivar:</strong> quienes ya confiaron en la clínica y podrían volver con una revisión, un nuevo tratamiento o una promoción.</li>
+      <li><strong>Envíos sin método ni control:</strong> mensajes manuales, sin secuencias, sin un ritmo seguro y sin medir qué funciona.</li>
+      <li><strong>Riesgo para tu número y para la normativa:</strong> enviar a mano y sin control puede dañar la reputación del número y descuidar el consentimiento de los contactos.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============== 4. LA SOLUCIÓN ============== -->
+<section class="block soft" id="s4">
+  <div class="wrap">
+    <span class="num">4</span>
+    <h2>Lo que vamos a hacer por ti</h2>
+
+    <div class="card">
+      <span class="tag">Plataforma · WhatsApp API + n8n + Chatwoot + Supabase</span>
+      <h3>Reactivación automática de contactos y pacientes por WhatsApp</h3>
+      <p>Una plataforma que se encarga de las dos oportunidades a la vez: recupera de forma automática los contactos "dormidos" y reactiva a tus pacientes actuales con nuevas propuestas, enviando mensajes personalizados de WhatsApp en secuencias diseñadas para reconectar de manera natural y cercana, sin que tu equipo tenga que dedicarle tiempo.</p>
+      <ul class="clean">
+        <li><strong>Secuencias personalizadas:</strong> mensajes diseñados para reconectar con contactos interesados y proponer revisiones, tratamientos o promociones a tus pacientes.</li>
+        <li><strong>Ritmo de envío seguro:</strong> respeta los tiempos entre mensajes y un volumen controlado que protege la reputación de tu número.</li>
+        <li><strong>Solo con consentimiento previo:</strong> únicamente se contacta a quien ha dado su permiso, de forma respetuosa y conforme a la normativa de protección de datos.</li>
+        <li><strong>Base de datos convertida en oportunidades:</strong> tus contactos y pacientes se convierten en primeras visitas y tratamientos para la clínica.</li>
+        <li><strong>Sin carga para tu equipo:</strong> el sistema trabaja solo; nadie tiene que enviar mensajes uno a uno.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="tag">Panel de control y métricas</span>
+      <h3>Tu panel para lanzar campañas y medir resultados</h3>
+      <p>Montamos el panel completo desde donde se gestiona todo. Mantienes el control total en todo momento, de forma sencilla y sin conocimientos técnicos.</p>
+      <ul class="clean">
+        <li><strong>Lanza o pausa campañas:</strong> tú decides cuándo empieza y cuándo se detiene cada secuencia.</li>
+        <li><strong>Historial completo:</strong> consulta cada conversación y todo lo enviado desde un mismo sitio.</li>
+        <li><strong>Exclusión de contactos:</strong> saca a cualquier persona de la comunicación cuando quieras, con un clic.</li>
+        <li><strong>Resultados en tiempo real:</strong> mides qué funciona y qué oportunidades se están recuperando.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 5. PLAZOS ============== -->
+<section class="block" id="s5">
+  <div class="wrap">
+    <span class="num">5</span>
+    <h2>Plazos de inicio y desarrollo</h2>
+    <div class="timeline">
+      <div class="row"><span class="k">📅 Fecha de propuesta</span><span class="v edit">Miércoles 1 de julio de 2026</span></div>
+      <div class="row"><span class="k">📅 Fecha límite de aprobación</span><span class="v edit">Miércoles 8 de julio de 2026</span></div>
+      <div class="row"><span class="k">🚀 Inicio de implementación</span><span class="v edit">Al aceptar la propuesta, agendamos la reunión de onboarding cuando le venga bien al cliente</span></div>
+      <div class="row"><span class="k">⏱ Duración estimada</span><span class="v edit">Entre 2 y 3 meses</span></div>
+      <div class="row"><span class="k">✅ Sistema listo y funcionando</span><span class="v edit">Aproximadamente 2-3 meses desde el inicio</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 6. INCLUIDO / NO ============== -->
+<section class="block soft" id="s6">
+  <div class="wrap">
+    <span class="num">6</span>
+    <h2>Qué está incluido y qué no</h2>
+    <div class="cols">
+      <div class="pane yes">
+        <h3>✓ Incluido en tu inversión</h3>
+        <ul>
+          <li>Reunión inicial de arranque y discovery técnico</li>
+          <li>Creación de todas las cuentas necesarias del proyecto</li>
+          <li>Setup de la integración Supabase + WhatsApp Business API + Chatwoot + n8n</li>
+          <li>Construcción del panel completo de gestión de campañas</li>
+          <li>Diseño de las secuencias de mensajes y del ritmo de envío seguro</li>
+          <li>Configuración del consentimiento y las exclusiones (RGPD)</li>
+          <li>Testing exhaustivo de envíos y campañas antes de salir en vivo</li>
+          <li>Entrenamiento de tu equipo (1 sesión)</li>
+          <li>Documentación técnica</li>
+          <li>Soporte para dudas por WhatsApp durante los 3 primeros meses</li>
+          <li>Mantenimiento mensual: incluye 1 reunión al mes para ver dudas del cliente y soporte por WhatsApp en horario laboral (9:00–18:00)</li>
+        </ul>
+      </div>
+      <div class="pane no">
+        <h3>× No incluido (cliente responsable)</h3>
+        <ul>
+          <li>Cuenta de Supabase <small>✓ Gratuita</small></li>
+          <li>WhatsApp Business API (Meta) <small>⚠ Coste por mensajería; lo paga el cliente directamente a Meta según volumen</small></li>
+          <li>Alojamiento de n8n y Chatwoot en Railway <small>⚠ Coste mensual a cargo del cliente</small></li>
+          <li>Número y tarjeta SIM dedicados para el envío <small>⚠ El cliente los contrata</small></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 7. FAQ ============== -->
+<section class="block" id="s7">
+  <div class="wrap">
+    <span class="num">7</span>
+    <h2>Preguntas frecuentes</h2>
+    <details open>
+      <summary>¿Es seguro para la reputación de mi número de WhatsApp?</summary>
+      <div class="answer">Sí. La plataforma envía con un ritmo controlado, respetando los tiempos entre mensajes y un volumen seguro. Además, solo se contacta a las personas que han dado su consentimiento previo, de modo que la comunicación se realiza siempre de forma respetuosa y cuidando tu número.</div>
+    </details>
+    <details>
+      <summary>¿Cumple con la protección de datos (RGPD)?</summary>
+      <div class="answer">Sí. Únicamente se contacta a quien ha dado su consentimiento previo y toda la comunicación se realiza conforme a la normativa de protección de datos. Desde el panel puedes excluir a cualquier contacto cuando lo desees, con un solo clic.</div>
+    </details>
+    <details>
+      <summary>¿Puedo lanzar y pausar campañas yo mismo?</summary>
+      <div class="answer">Por supuesto. Desde un panel sencillo puedes lanzar o pausar campañas, ver el historial completo de cada conversación, excluir a cualquier contacto y medir resultados en tiempo real. Mantienes el control total en todo momento, sin necesidad de conocimientos técnicos.</div>
+    </details>
+  </div>
+</section>
+
+<!-- ============== 8. PAGO ============== -->
+<section class="block soft" id="s8">
+  <div class="wrap">
+    <span class="num">8</span>
+    <h2>Cómo pagamos</h2>
+    <p><strong>Sistema de pago:</strong> una vez confirmada la propuesta, te enviamos nuestros datos. El pago se realiza por transferencia bancaria o tarjeta.</p>
+    <p><strong>Estructura:</strong> 2.000€ de implementación al inicio (para agendar y arrancar el proyecto). Luego, 200€/mes de mantenimiento desde el mes de inicio, con una permanencia mínima de un año. A partir del primer año, el cliente puede cancelar cuando quiera.</p>
+    <p><strong>Concepto en la transferencia:</strong> "Implementación Plataforma de Reactivación — Clínica Dental Cots"</p>
+  </div>
+</section>
+
+<!-- ============== 9. PRÓXIMOS PASOS + FIRMA ============== -->
+<section class="block" id="s9">
+  <div class="wrap">
+    <span class="num">9</span>
+    <h2>Próximos pasos</h2>
+    <p>Esto es lo que proponemos que hagamos ahora:</p>
+    <ul class="clean">
+      <li><strong>1.</strong> Confirmar por escrito la aceptación de la propuesta.</li>
+      <li><strong>2.</strong> Firmar el contrato: una vez aceptada la propuesta, te enviamos el contrato con las condiciones del servicio para formalizar el acuerdo.</li>
+      <li><strong>3.</strong> Realizar el primer pago de 2.000€ para empezar con la implementación.</li>
+      <li><strong>4.</strong> Reunión de onboarding: una vez aceptada la propuesta, nos reunimos para arrancar el proyecto y empezar a crear todas las cuentas y accesos necesarios para el cliente (WhatsApp, n8n, Chatwoot, Supabase, integraciones, etc.).</li>
+    </ul>
+    <p>Si surge cualquier duda o quieres ajustar algún punto, estamos a una respuesta de distancia. Gracias por tu confianza.</p>
+
+    <div class="sign">
+      <p><strong>Un abrazo,</strong></p>
+      <div class="name">Javier Prieto</div>
+      <p>Consultor de IA<br>Smart Aligner Services</p>
+      <div class="pledge">
+        <strong>Compromiso:</strong> Por la presente, Smart Aligner Services se compromete a realizar con profesionalidad y dedicación todos los servicios técnicos detallados en esta propuesta.
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <img src="logo-sas.png" alt="Smart Aligner Services" style="width:96px;height:auto;display:block;margin:0 auto">
+  <p style="margin-top:16px"><strong>Confidencialidad:</strong> esta propuesta es confidencial y está preparada específicamente para <strong>Clínica Dental Cots</strong>. No puede ser compartida, copiada o distribuida sin consentimiento expreso.</p>
+</footer>
+
+</body>
+</html>
